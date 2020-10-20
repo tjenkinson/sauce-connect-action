@@ -133,16 +133,17 @@ if test "${32}"; then
 fi
 
 docker pull saucelabs/sauce-connect:4.6.2
-docker run \
-    --network="host" \
-    -v /tmp:/tmp \
-    -t saucelabs/sauce-connect:4.6.2 \
-    -f /tmp/sc.ready \
-    $params \
-    &
 
-until [ -f /tmp/sc.ready ]
-do
-    sleep 5
-done
+mkfifo tail-pipe
+mkfifo grep-pipe
+
+tail -f tail-pipe &
+
+(docker run \
+    --network="host" \
+    -t saucelabs/sauce-connect:4.6.2 \
+    $params | tee tail-pipe | tee grep-pipe &)
+
+(tail -f grep-pipe &) | grep -q "Sauce Connect is up, you may start your tests."
+
 echo "SC ready"
