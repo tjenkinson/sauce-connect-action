@@ -132,17 +132,21 @@ if test "${32}"; then
     params="${params} --tunnel-identifier=${32}"
 fi
 
+echo 'workspace'
+echo $GITHUB_WORKSPACE
+
 docker pull saucelabs/sauce-connect:4.6.2
+# mkdir thing
 docker run \
     --network="host" \
-    -v /tmp:/tmp \
+    # -v /github/workspace/thing:/tmp \
     -t saucelabs/sauce-connect:4.6.2 \
-    -f /tmp/sc.ready \
+    # -f /tmp/sc.ready \    
     $params \
     &
 
-until [ -f /tmp/sc.ready ]
-do
-    sleep 5
-done
+# until [ -f thing/sc.ready ]
+# do
+#     sleep 5
+# done
 echo "SC ready"
