@@ -1697,20 +1697,22 @@ function startContainer() {
             '--rm',
             containerName
         ].concat(buildOptions()))).trim();
+        let errorOccurred = false;
         try {
             yield wait_1.wait(DIR_IN_HOST);
         }
         catch (e) {
+            errorOccurred = true;
             yield stop_container_1.stopContainer(containerId);
             throw e;
         }
         finally {
-            if (core_1.isDebug()) {
+            if (errorOccurred || core_1.isDebug()) {
                 try {
                     const log = yield fs_1.promises.readFile(path_1.join(DIR_IN_HOST, 'sauce-connect.log'), {
                         encoding: 'utf-8'
                     });
-                    core_1.debug(`Sauce connect log: ${log}`);
+                    (errorOccurred ? core_1.warning : core_1.debug)(`Sauce connect log: ${log}`);
                 }
                 catch (_a) {
                     //
