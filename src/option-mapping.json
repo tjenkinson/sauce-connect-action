@@ -134,10 +134,5 @@
     {
         "actionOption": "tunnelIdentifier",
         "dockerOption": "tunnel-identifier"
-    },
-    {
-        "actionOption": "verbose",
-        "dockerOption": "verbose",
-        "flag": true
     }
 ]

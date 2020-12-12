@@ -29,7 +29,7 @@ function buildOptions(): string[] {
         `--readyfile=${READY_FILE}`
     ]
 
-    if (isDebug()) {
+    if (isDebug() || getInput('verbose') !== '') {
         params.push('--verbose')
     }
 
